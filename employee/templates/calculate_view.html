@@ -1,0 +1,73 @@
+<div class="main">
+    <div>
+        <div>
+            <label>Employee code</label>
+            <input type="text" id="employee_code" />
+            <input type="submit" class="btn" name="employee_salary" title="Calculate salary"
+                onclick="calculate_employee_salary()">
+            <input id="employee_result" disabled="true">
+        </div>
+    </div>
+    <div>
+        <div>
+            <label>Lecturer code</label>
+            <input type="text" id="lecturer_code" />
+            <input type="submit" class="btn" title="Calculate salary" name="lecturer_salary"
+                onclick="calculate_lecturer_salary()">
+            <input id="lecturer_result" disabled="true">
+            <label>Base salary</label>
+            <input type="number" id="base_sal" placeholder="20000">
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <label>Student code</label>
+            <input type="text" id="student_code" />
+            <label>Program code</label>
+            <input type="text" id="program_code" />
+            <input type="submit" class="btn" title="Get student score" name="get_student_score"
+                onclick="get_student_score()">
+            <div id="student_result" disabled="true"></div>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <label>Program code</label>
+            <input type="text" id="program_code_unfinished" />
+            <input type="submit" class="btn" title="Get unfinished students" name="get_unfinished_students"
+                onclick="get_unfinished_student()">
+            <div id="program_result" disabled="true"></div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+<script>
+    async function calculate_employee_salary() {
+        const employee_code = document.getElementById("employee_code").value;
+        const data = await fetch(`http://localhost:8000/calculate/employee_salary/${employee_code}`);
+        document.getElementById("employee_result").value = await data.text()
+    }
+    async function calculate_lecturer_salary() {
+        const lecturer_code = document.getElementById("lecturer_code").value;
+        const base = document.getElementById("base_sal").value || document.getElementById("base_sal").placeholder;
+        const data = await fetch(`http://localhost:8000/calculate/lecturer_salary/${lecturer_code}/${base}`);
+
+        document.getElementById("lecturer_result").value = await data.text()
+    }
+    async function get_student_score() {
+        const student_code = document.getElementById("student_code").value;
+        const program_code = document.getElementById("program_code").value;
+        const data = await fetch(`http://localhost:8000/calculate/student_score/${student_code}/${program_code}`);
+        document.getElementById("student_result").innerHTML = await data.text()
+    }
+    async function get_unfinished_student() {
+        const program_code = document.getElementById("program_code_unfinished").value;
+        const data = await fetch(`http://localhost:8000/calculate/unfinished_students/${program_code}`);
+        document.getElementById("program_result").innerHTML = await data.text()
+    }
+</script>
+</div>

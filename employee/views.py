@@ -74,17 +74,30 @@ def get_unfinished_students(request, program_code):
     with connection.cursor() as cursor:
         cursor.execute(
             f"""
-                SELECT code from (
-                SELECT s.code as code, count(*) as count from employee_subjectstudent as ss
-                LEFT JOIN employee_student as s on s.id = ss.student_id
-                where ss.subject_id in (
-                    select subject_id from employee_programsubject as ps
-                    left join employee_program as p on p.id = ps.program_id
-                    where p.code = '{program_code}'
-                ) group by code) p
-                    where p.count < (SELECT count(*) from employee_programsubject as ps
-                    left join employee_program as p on p.id = ps.program_id
-                    where p.code = '{program_code}')
+                SELECT
+                s.code
+                FROM employee_programstudent as ps
+                LEFT JOIN employee_program as p on p.id = ps.program_id
+                LEFT JOIN employee_student as s on s.id = ps.student_id
+                LEFT JOIN (
+                    SELECT student_id, count(*) as count from employee_subjectstudent as ss
+                    WHERE ss.subject_id in (
+                        SELECT
+                            subject_id
+                        FROM employee_programsubject as ps
+                        LEFT JOIN employee_program as p on p.id = ps.program_id
+                        WHERE p.code = '{program_code}'
+                    ) 
+                    GROUP BY student_id 
+                ) scount on scount.student_id = ps.student_id
+                WHERE p.code = '{program_code}' and 
+                    (scount.count is null
+                        or scount.count < (
+                            SELECT count(*) from employee_programsubject as ps
+                            left join employee_program as p on p.id = ps.program_id
+                            where p.code = '{program_code}'
+                        )
+                    )
             """
         )
         row = cursor.fetchall()

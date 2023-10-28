@@ -75,7 +75,7 @@ def get_unfinished_students(request, program_code):
         cursor.execute(
             f"""
                 SELECT
-                s.code
+                s.name || ' - '|| s.code
                 FROM employee_programstudent as ps
                 LEFT JOIN employee_program as p on p.id = ps.program_id
                 LEFT JOIN employee_student as s on s.id = ps.student_id

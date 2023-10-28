@@ -7,7 +7,7 @@
 ## Cài đặt ứng dụng
 - Sửa lại config db trong `demo_csdl/settings.py -> DATABASES`
 - Clone project về, cd vào project
-- Chạy `python3 manage.py makemigrations`, `python3 manage.py migrate` để init database
+- Chạy `python3 manage.py makemigrations employee`, `python3 manage.py migrate` để init database
 - Chạy `python3 manage.py createsuperuser` để khởi tạo super user
 - Chạy script init trigger trong `scripts/trigger.sql` để khởi tạo các trigger`
 

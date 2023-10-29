@@ -13,7 +13,7 @@ class Employee(models.Model):
     name = models.CharField(null=False, max_length=100)
     code = models.CharField(null=False, max_length=100, unique=True)
     birthday = models.DateField(null=False)
-    gender = models.CharField(choices=Gender.choices)
+    gender = models.CharField(choices=Gender.choices, null=True, blank=True)
     supervisor = models.ForeignKey(
         "self", on_delete=models.CASCADE, null=True, blank=True
     )
@@ -26,7 +26,7 @@ class Student(models.Model):
     name = models.CharField(null=False, max_length=100)
     code = models.CharField(null=False, max_length=100, unique=True)
     birthday = models.DateField(null=False)
-    gender = models.CharField(choices=Gender.choices)
+    gender = models.CharField(choices=Gender.choices, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} ({self.code})"
@@ -95,7 +95,7 @@ class Lecturer(models.Model):
     name = models.CharField(null=False, max_length=100)
     code = models.CharField(null=False, max_length=100, unique=True)
     birthday = models.DateField(null=False)
-    gender = models.CharField(choices=Gender.choices)
+    gender = models.CharField(choices=Gender.choices, null=True, blank=True)
     subjects = models.ManyToManyField(
         "Subject", through="SubjectLecturer", through_fields=("lecturer", "subject")
     )

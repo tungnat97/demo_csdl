@@ -22,7 +22,7 @@ def calculate_employee(request, code):
                 ) p on p.ecode = em.code
                 LEFT JOIN (
                     SELECT count(*) as em_num, em2.code as code from employee_employee as em1
-                    left join employee_employee as em2 on em2.id = em1.supervisor_id  where em2.code = 'NV001' group by em2.code
+                    left join employee_employee as em2 on em2.id = em1.supervisor_id  where em2.code = '{code}' group by em2.code
                 ) em1 on em1.code = em.code WHERE em.code = '{code}';
             """
         )
